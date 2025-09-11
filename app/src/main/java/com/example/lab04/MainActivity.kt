@@ -13,6 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.lab04.ui.theme.Lab04Theme
 import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.unit.dp
+import androidx.compose.material3.Text
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,13 +38,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    androidx.compose.foundation.layout.Column(modifier = modifier) {
+    Column(modifier = modifier) {
         Text(text = "Hello $name!")
-        Button(onClick = { /* TODO: acción futura */ }) {
-            Text("Navegar")
-        }
+        Text(
+            text = "¡Bienvenido a Lab04!",
+            modifier = Modifier.padding(top = 16.dp)
+        )
     }
 }
+
 
 
 @Preview(showBackground = true)
