@@ -49,8 +49,11 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo de la aplicación",
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier
+                .padding(top = 32.dp) // aumentamos el padding
+                .size(200.dp)          // cambiamos el tamaño
         )
+
     }
 }
 
