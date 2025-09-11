@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.Text
+import androidx.compose.material3.Button
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +43,13 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Text(text = "Hello $name!")
+        // Primer componente actualizado: botón de navegacións
+        Button(
+            onClick = { /* acción futura */ },
+            modifier = Modifier.padding(top = 24.dp)
+        ) {
+            Text("Navegar")
+        }
         Text(
             text = "¡Bienvenido a Lab04!",
             modifier = Modifier.padding(top = 16.dp)
@@ -53,7 +61,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         )
     }
 }
-
 
 
 @Preview(showBackground = true)
