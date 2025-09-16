@@ -4,23 +4,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.lab04.ui.theme.Lab04Theme
-import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
-import com.example.lab04.R
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.Text
-import androidx.compose.material3.Button
+import com.example.lab04.ui.theme.Lab04Theme
+import com.example.lab04.R
 
+// Modificado por Sergio
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,33 +38,33 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
-        Text(text = "Hello $name!")
-        // Primer componente actualizado: botón de navegacións
+        // LÍNEA MODIFICADA — Sergio
+        Text(text = "Hola, Sergio!") // Sergio
+
         Button(
             onClick = { /* acción futura */ },
             modifier = Modifier.padding(top = 24.dp)
         ) {
             Text("Navegar")
         }
+
         Text(
             text = "¡Bienvenido a Lab04!",
             modifier = Modifier.padding(top = 16.dp)
         )
+
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo de la aplicación",
             modifier = Modifier
-                .padding(top = 32.dp) // aumentamos el padding
-                .size(200.dp)          // cambiamos el tamaño
+                .padding(top = 32.dp)
+                .size(200.dp)
         )
-
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
