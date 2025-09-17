@@ -41,8 +41,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
-        // LÍNEA MODIFICADA — Sergio
-        Text(text = "Hola, Sergio!") // Sergio
+        Text(text = "Hola, Sergio y Alexander !") // Conflicto resuelto
 
         Button(
             onClick = { /* acción futura */ },
@@ -65,6 +64,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         )
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
