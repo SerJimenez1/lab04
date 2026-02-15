@@ -10,7 +10,7 @@
 **Versión:** MVP1 (completado)  
 **Estado:** Estable y funcional  
 **Desarrollador:** Sergio Jiménez  
-**Periodo de desarrollo:** 17 de enero – 13 de febrero de 2026  
+**Periodo de desarrollo:** 05 de enero – 05 de febrero de 2026  
 **Días laborables:** 28  
 
 ---
@@ -340,159 +340,6 @@ npm run start:prod
 
 ---
 
-## 🐛 Troubleshooting Común
-
-### ❌ Frontend no conecta al backend
-
-**Síntoma:** Error `Failed to fetch` o `Network Error`
-
-**Solución:**
-```bash
-# 1. Verificar que backend esté corriendo
-curl http://192.168.18.6:3000/opportunities/grouped
-
-# 2. Revisar CORS en main.ts del backend
-app.enableCors({ 
-  origin: ['http://localhost:5173', 'http://192.168.18.6:5173'],
-  credentials: true 
-});
-
-# 3. Verificar IP del backend en .env del frontend
-VITE_API_URL=http://192.168.18.6:3000
-```
-
----
-
-### ❌ Archivos no se suben
-
-**Síntoma:** Error `Storage operation failed` o HTTP 403
-
-**Solución:**
-1. Verificar permisos de bucket en **Supabase Dashboard** → Storage
-2. Confirmar que bucket `attachments` es público (o configurar RLS)
-3. Revisar tamaño máximo permitido (default 50MB)
-4. Validar que `SUPABASE_SERVICE_KEY` esté en `.env` del backend
-```typescript
-// Verificar configuración en attachments.service.ts
-const { data, error } = await supabase.storage
-  .from('attachments')
-  .upload(filePath, file.buffer, {
-    contentType: file.mimetype,
-    upsert: false,
-  });
-```
-
----
-
-### ❌ Gráficas no actualizan
-
-**Síntoma:** Datos desactualizados después de crear/editar oportunidades
-
-**Solución:**
-```typescript
-// Forzar invalidación de cache después de mutación
-await queryClient.invalidateQueries({ queryKey: ['opportunities-grouped'] });
-
-// O configurar auto-refetch más frecuente
-const { data } = useQuery({
-  queryKey: ['opportunities-grouped'],
-  queryFn: fetchOpportunities,
-  refetchInterval: 5000, // 5 segundos
-});
-```
-
----
-
-### ❌ Error "Cannot read properties of undefined"
-
-**Síntoma:** `TypeError: Cannot read properties of undefined (reading 'map')`
-
-**Causa:** Relaciones en Supabase sin datos o `null`
-
-**Solución:**
-```typescript
-// Usar optional chaining y valores por defecto
-{templates?.map((tmpl: any) => ( // ← Agregar ?
-  <li key={tmpl.id}>{tmpl.nombre}</li>
-))}
-
-// O validar antes de mapear
-{templates && templates.length > 0 ? (
-  <ul>{templates.map(...)}</ul>
-) : (
-  <p>No hay templates</p>
-)}
-```
-
----
-
-### ❌ Precio referencial no se sincroniza
-
-**Síntoma:** Monto actualizado en modal pero no en ListView/Kanban
-
-**Causa:** Falta sincronización entre `opportunity_detail` y `opportunity`
-
-**Solución:** Ya implementado en `updateOrCreateDetail()`:
-```typescript
-// En opportunities.service.ts línea 458-469
-if (cleanedDto.monto_referencial !== undefined) {
-  await supabase
-    .from('opportunity')
-    .update({ precio_referencial: cleanedDto.monto_referencial })
-    .eq('id', opportunityId);
-}
-```
-
-Si sigue sin funcionar:
-1. Verificar que columna `precio_referencial` existe en tabla `opportunity`
-2. Refrescar cache: `queryClient.invalidateQueries(['opportunities-grouped'])`
-
----
-
-### ❌ "users" endpoint devuelve 404
-
-**Síntoma:** `GET http://192.168.18.6:3000/users 404 (Not Found)`
-
-**Causa:** Endpoint está en `/opportunities/users`, no en `/users`
-
-**Solución:**
-```typescript
-// En ListView.tsx línea 15
-const res = await fetch('http://192.168.18.6:3000/opportunities/users');
-// NO: http://192.168.18.6:3000/users
-```
-
----
-
-### ❌ Empresas desconocidas no muestran opciones
-
-**Síntoma:** Banner rojo aparece pero sin botones de empresas
-
-**Causa:** Endpoint `/opportunities/empresas` no implementado o returna vacío
-
-**Solución:**
-1. Verificar que endpoint existe en `opportunities.controller.ts`:
-```typescript
-@Get('empresas')
-async getEmpresas() {
-  return this.opportunitiesService.getEmpresas();
-}
-```
-
-2. Verificar que tabla `empresa` tiene datos:
-```sql
-SELECT * FROM empresa WHERE activo = true;
-```
-
-3. Si está vacío, insertar empresas:
-```sql
-INSERT INTO empresa (ruc, razon_social, activo) VALUES
-('20123456789', 'Fibertel Networks', true),
-('20987654321', 'Otra Empresa', true);
-```
-
----
-
 ## 🗺️ Roadmap
 
 ### ✅ MVP1 (Completado - Febrero 2026)
@@ -604,17 +451,6 @@ INSERT INTO empresa (ruc, razon_social, activo) VALUES
 
 ---
 
-## 📄 Licencia y Créditos
-
-### Licencia
-
-**Proyecto propietario de Fibertel Networks S.A.C.**  
-Todos los derechos reservados © 2026
-
-Este software es propiedad exclusiva de Fibertel Networks S.A.C. y está protegido por las leyes de derechos de autor de Perú. Queda prohibida la reproducción, distribución, modificación o uso comercial sin autorización expresa por escrito.
-
----
-
 ### Créditos
 
 **Desarrollado por:** Sergio Jiménez  
@@ -663,6 +499,6 @@ El sistema está listo para uso productivo en **Fibertel Networks S.A.C.** y ha 
 
 ---
 
-**Desarrollado con 💙 y ☕ en Lima, Perú**
+**Desarrollado con 💙 y ☕ en Arequipa, Perú**
 
 *Última actualización: 13 de febrero de 2026*
